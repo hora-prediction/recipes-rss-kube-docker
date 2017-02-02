@@ -1,4 +1,4 @@
-FROM hakobera/locust
+FROM teeratpitakrat/docker-locust
 MAINTAINER Teerat Pitakrat
 
 ADD ./test /test
