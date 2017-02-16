@@ -1,11 +1,15 @@
 from locust import HttpLocust, TaskSet, task
+from locust import events
 from random import randint
+import json
+import requests
+from influxdb import InfluxDBClient
+import os
 
 class MyTaskSet(TaskSet):
 
     def on_start(self):
         self.user_id = randint(1,999999999)
-        print("username = ", self.user_id)
 
     @task(1)
     def view(self):
@@ -79,3 +83,50 @@ class MyLocust(HttpLocust):
     task_set = MyTaskSet
     min_wait = 5000
     max_wait = 10000
+
+def on_request_success(request_type, name, response_time, response_length, **kw):
+    json_body = [
+            {
+                "measurement": "test_results",
+                "tags": {
+                    "request_type": request_type,
+                    "name": name,
+                    "exception": ""
+                    },
+                "fields": {
+                    "request_type": request_type,
+                    "name": name,
+                    "response_time": response_time,
+                    "response_length": response_length,
+                    "exception": ""
+                    }
+                }
+            ]
+    client.write_points(json_body)
+
+def on_request_failure(request_type, name, response_time, exception, **kw):
+    json_body = [
+            {
+                "measurement": "test_results",
+                "tags": {
+                    "request_type": request_type,
+                    "name": name,
+                    "exception": str(exception)
+                    },
+                "fields": {
+                    "request_type": request_type,
+                    "name": name,
+                    "response_time": response_time,
+                    "response_length": 0,
+                    "exception": str(exception)
+                    }
+                }
+            ]
+    client.write_points(json_body)
+
+influxdb_url = os.environ['INFLUXDB_URL']
+influxdb_port = os.environ['INFLUXDB_PORT']
+events.request_success += on_request_success
+events.request_failure += on_request_failure
+client = InfluxDBClient(influxdb_url, influxdb_port, 'root', 'root', 'locust')
+client.create_database('locust')
