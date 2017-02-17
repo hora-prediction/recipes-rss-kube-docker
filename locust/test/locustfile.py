@@ -102,7 +102,7 @@ class MyTaskSet(TaskSet):
                 {
                     "measurement": "test_results",
                     "tags": {
-                        "status_code": response.status_code,
+                        "status_code": str(response.status_code),
                         "reason": response.reason,
                         "url": response.request.url,
                         "path_url": response.request.path_url,
@@ -110,7 +110,7 @@ class MyTaskSet(TaskSet):
                         "body": response.request.body
                         },
                     "fields": {
-                        "status_code": response.status_code,
+                        "status_code": str(response.status_code),
                         "reason": response.reason,
                         "elapsed": response.elapsed.total_seconds(),
                         "url": response.request.url,
