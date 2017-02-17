@@ -149,5 +149,5 @@ class InfluxDBWriter():
             InfluxDBWriter.client.write_points(json_body)
         except ConnectionError as e:
             InfluxDBWriter.connected = False
-            print("ERROR: Cannot connect to InfluxDB. Dropping data point. See exception below for details")
+            print("ERROR: Cannot connect to InfluxDB. Dropping data point. See exception below for details.")
             print(e)
