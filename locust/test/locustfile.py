@@ -129,12 +129,12 @@ class MyLocust(HttpLocust):
 
 class InfluxDBWriter():
     connected = False
-    influxdb_url = os.environ['INFLUXDB_URL']
-    influxdb_port = os.environ['INFLUXDB_PORT']
     client = None
 
     @staticmethod
     def connect():
+        influxdb_url = os.environ['INFLUXDB_URL']
+        influxdb_port = os.environ['INFLUXDB_PORT']
         print("Connecting to InfluxDB")
         InfluxDBWriter.client = InfluxDBClient(InfluxDBWriter.influxdb_url, InfluxDBWriter.influxdb_port, 'root', 'root', 'locust')
         InfluxDBWriter.client.create_database('locust')
