@@ -164,4 +164,8 @@ def log_user_count(user_count, **kw):
     print(json_body)
     InfluxDBWriter.write(json_body)
 
+def log_stop(**kw):
+    log_user_count(0)
+
 events.hatch_complete += log_user_count
+events.locust_stop_hatching += log_stop
