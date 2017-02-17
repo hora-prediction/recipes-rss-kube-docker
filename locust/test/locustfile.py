@@ -151,3 +151,17 @@ class InfluxDBWriter():
             InfluxDBWriter.connected = False
             print("ERROR: Cannot connect to InfluxDB. Dropping data point. See exception below for details.")
             print(e)
+
+def log_user_count(user_count, **kw):
+    json_body = [
+            {
+                "measurement": "user_count",
+                "fields": {
+                    "user_count": user_count
+                    }
+                }
+            ]
+    print(json_body)
+    InfluxDBWriter.write(json_body)
+
+events.hatch_complete += log_user_count
