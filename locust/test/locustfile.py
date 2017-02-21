@@ -136,7 +136,7 @@ class InfluxDBWriter():
         influxdb_url = os.environ['INFLUXDB_URL']
         influxdb_port = os.environ['INFLUXDB_PORT']
         print("Connecting to InfluxDB")
-        InfluxDBWriter.client = InfluxDBClient(InfluxDBWriter.influxdb_url, InfluxDBWriter.influxdb_port, 'root', 'root', 'locust')
+        InfluxDBWriter.client = InfluxDBClient(influxdb_url, influxdb_port, 'root', 'root', 'locust')
         InfluxDBWriter.client.create_database('locust')
         InfluxDBWriter.connected = True
         print("Connected to InfluxDB")
