@@ -6,6 +6,7 @@ import requests
 from influxdb import InfluxDBClient
 import os
 from requests.exceptions import ConnectionError
+import urllib2
 
 class MyTaskSet(TaskSet):
 
@@ -150,6 +151,10 @@ class InfluxDBWriter():
         except ConnectionError as e:
             InfluxDBWriter.connected = False
             print("ERROR: Cannot connect to InfluxDB. Dropping data point. See exception below for details.")
+            print(e)
+        except urllib2.HTTPError as e:
+            InfluxDBWriter.connected = False
+            print("ERROR: Database locust does not exist. Dropping data point. Will attempt to reconnect and create database.")
             print(e)
 
 def log_user_count(user_count, **kw):
