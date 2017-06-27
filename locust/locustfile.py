@@ -111,13 +111,7 @@ class MyTaskSet(TaskSet):
                         "body": response.request.body
                         },
                     "fields": {
-                        "status_code": str(response.status_code),
-                        "reason": response.reason,
-                        "elapsed": response.elapsed.total_seconds(),
-                        "url": response.request.url,
-                        "path_url": response.request.path_url,
-                        "method": response.request.method,
-                        "body": response.request.body
+                        "elapsed": response.elapsed.total_seconds()
                         }
                     }
                 ]
